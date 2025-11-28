@@ -4,16 +4,39 @@ import GifEncoder from 'gif-encoder-2';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import path from 'path';
+import fs from 'fs';
 
 dayjs.extend(duration);
 
 export const runtime = 'nodejs'; // Required for @napi-rs/canvas
 
-// Register font
-const fontPath = path.join(process.cwd(), 'public', 'fonts', 'Roboto-Regular.ttf');
-GlobalFonts.registerFromPath(fontPath, 'Roboto');
+let fontRegistered = false;
+
+function ensureFontRegistered() {
+  if (fontRegistered) return;
+
+  const cwd = process.cwd();
+  const fontPath = path.join(cwd, 'public', 'fonts', 'Roboto-Regular.ttf');
+
+  console.log('[Countdown API] CWD:', cwd);
+  console.log('[Countdown API] Font path:', fontPath);
+  console.log('[Countdown API] Font exists:', fs.existsSync(fontPath));
+
+  if (fs.existsSync(fontPath)) {
+    try {
+      GlobalFonts.registerFromPath(fontPath, 'Roboto');
+      console.log('[Countdown API] Font registered successfully');
+      fontRegistered = true;
+    } catch (error) {
+      console.error('[Countdown API] Font registration error:', error);
+    }
+  } else {
+    console.error('[Countdown API] Font file not found at:', fontPath);
+  }
+}
 
 export async function GET(req: NextRequest) {
+  ensureFontRegistered();
   const searchParams = req.nextUrl.searchParams;
   const time = searchParams.get('time');
   const width = parseInt(searchParams.get('width') || '400');
