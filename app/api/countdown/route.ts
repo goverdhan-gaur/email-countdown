@@ -1,12 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createCanvas } from '@napi-rs/canvas';
+import { createCanvas, GlobalFonts } from '@napi-rs/canvas';
 import GifEncoder from 'gif-encoder-2';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import path from 'path';
 
 dayjs.extend(duration);
 
 export const runtime = 'nodejs'; // Required for @napi-rs/canvas
+
+// Register font
+const fontPath = path.join(process.cwd(), 'public', 'fonts', 'Roboto-Regular.ttf');
+GlobalFonts.registerFromPath(fontPath, 'Roboto');
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
@@ -55,7 +60,7 @@ export async function GET(req: NextRequest) {
     ctx.textBaseline = 'middle';
 
     if (diff <= 0) {
-      ctx.font = 'bold 30px sans-serif';
+      ctx.font = 'bold 30px Roboto';
       ctx.fillText('EXPIRED', width / 2, height / 2);
     } else {
       const dur = dayjs.duration(diff);
@@ -68,12 +73,12 @@ export async function GET(req: NextRequest) {
 
       // Draw Label
       if (label) {
-        ctx.font = '16px sans-serif';
+        ctx.font = '16px Roboto';
         ctx.fillText(label, width / 2, height / 2 - 15);
-        ctx.font = 'bold 30px sans-serif';
+        ctx.font = 'bold 30px Roboto';
         ctx.fillText(timeString, width / 2, height / 2 + 15);
       } else {
-        ctx.font = 'bold 30px sans-serif';
+        ctx.font = 'bold 30px Roboto';
         ctx.fillText(timeString, width / 2, height / 2);
       }
     }
