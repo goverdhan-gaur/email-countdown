@@ -11,9 +11,10 @@ dayjs.extend(duration);
 export const runtime = 'nodejs'; // Required for @napi-rs/canvas
 
 let fontRegistered = false;
+let fontFamily = 'sans-serif'; // Default fallback
 
 function ensureFontRegistered() {
-  if (fontRegistered) return;
+  if (fontRegistered) return fontFamily;
 
   const cwd = process.cwd();
   const fontPath = path.join(cwd, 'public', 'fonts', 'Roboto-Regular.ttf');
@@ -26,17 +27,23 @@ function ensureFontRegistered() {
     try {
       GlobalFonts.registerFromPath(fontPath, 'Roboto');
       console.log('[Countdown API] Font registered successfully');
+      fontFamily = 'Roboto';
       fontRegistered = true;
     } catch (error) {
       console.error('[Countdown API] Font registration error:', error);
+      fontFamily = 'sans-serif';
     }
   } else {
     console.error('[Countdown API] Font file not found at:', fontPath);
+    fontFamily = 'sans-serif';
   }
+
+  fontRegistered = true;
+  return fontFamily;
 }
 
 export async function GET(req: NextRequest) {
-  ensureFontRegistered();
+  const font = ensureFontRegistered();
   const searchParams = req.nextUrl.searchParams;
   const time = searchParams.get('time');
   const width = parseInt(searchParams.get('width') || '400');
