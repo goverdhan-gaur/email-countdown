@@ -9,6 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@napi-rs/canvas": "^0.1.83",
+    "dayjs": "^1.11.19",
+    "gif-encoder-2": "^1.0.5",
+    "lucide-react": "^0.555.0",
     "next": "16.0.5",
     "react": "19.2.0",
     "react-dom": "19.2.0"
