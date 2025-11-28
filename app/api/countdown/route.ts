@@ -90,7 +90,7 @@ export async function GET(req: NextRequest) {
     ctx.textBaseline = 'middle';
 
     if (diff <= 0) {
-      ctx.font = 'bold 30px Roboto';
+      ctx.font = `bold 30px ${font}`;
       ctx.fillText('EXPIRED', width / 2, height / 2);
     } else {
       const dur = dayjs.duration(diff);
@@ -103,12 +103,12 @@ export async function GET(req: NextRequest) {
 
       // Draw Label
       if (label) {
-        ctx.font = '16px Roboto';
+        ctx.font = `16px ${font}`;
         ctx.fillText(label, width / 2, height / 2 - 15);
-        ctx.font = 'bold 30px Roboto';
+        ctx.font = `bold 30px ${font}`;
         ctx.fillText(timeString, width / 2, height / 2 + 15);
       } else {
-        ctx.font = 'bold 30px Roboto';
+        ctx.font = `bold 30px ${font}`;
         ctx.fillText(timeString, width / 2, height / 2);
       }
     }
