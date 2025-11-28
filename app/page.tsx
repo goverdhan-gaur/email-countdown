@@ -19,6 +19,8 @@ export default function Home() {
   const [previewKey, setPreviewKey] = useState(0);
 
   useEffect(() => {
+    if (!targetDate) return;
+
     const params = new URLSearchParams({
       time: targetDate,
       width: width.toString(),
