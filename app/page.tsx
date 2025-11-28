@@ -44,7 +44,7 @@ export default function Home() {
     navigator.clipboard.writeText(imgTag);
     alert('Copied to clipboard!');
   };
-
+  console.log(generatedUrl);
   return (
     <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-4xl mx-auto">
